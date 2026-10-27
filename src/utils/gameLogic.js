@@ -18,29 +18,43 @@ export function isDraw(squares) {
   return squares.every(Boolean) && !calculateWinner(squares);
 }
 
-// Cell where `player` would complete a line, or null.
-function findCompletingCell(squares, player) {
-  for (const line of WIN_LINES) {
-    const marks = line.map((i) => squares[i]);
-    if (marks.filter((m) => m === player).length === 2 && marks.includes(null)) {
-      return line[marks.indexOf(null)];
-    }
-  }
-  return null;
+// Scores a position from `player`'s point of view via minimax.
+// Prefers faster wins and slower losses.
+function minimax(squares, turn, player, depth) {
+  const result = calculateWinner(squares);
+  if (result) return result.winner === player ? 10 - depth : depth - 10;
+  if (squares.every(Boolean)) return 0;
+
+  const next = turn === 'X' ? 'O' : 'X';
+  const scores = [];
+  squares.forEach((cell, i) => {
+    if (cell) return;
+    const copy = squares.slice();
+    copy[i] = turn;
+    scores.push(minimax(copy, next, player, depth + 1));
+  });
+  return turn === player ? Math.max(...scores) : Math.min(...scores);
 }
 
-// Simple computer opponent: win if possible, else block, else centre, corner, any.
-export function getComputerMove(squares, player) {
+// Returns the index of the best square for `player`, or null if the board is full.
+export function getComputerMove(squares, player = 'O') {
   const opponent = player === 'X' ? 'O' : 'X';
-  const win = findCompletingCell(squares, player);
-  if (win !== null) return win;
-  const block = findCompletingCell(squares, opponent);
-  if (block !== null) return block;
+  let bestScore = -Infinity;
+  let bestMoves = [];
 
-  const empty = (i) => squares[i] === null;
-  if (empty(4)) return 4;
-  const corners = [0, 2, 6, 8].filter(empty);
-  if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
-  const rest = squares.map((_, i) => i).filter(empty);
-  return rest[Math.floor(Math.random() * rest.length)];
+  squares.forEach((cell, i) => {
+    if (cell) return;
+    const copy = squares.slice();
+    copy[i] = player;
+    const score = minimax(copy, opponent, player, 1);
+    if (score > bestScore) {
+      bestScore = score;
+      bestMoves = [i];
+    } else if (score === bestScore) {
+      bestMoves.push(i);
+    }
+  });
+
+  if (bestMoves.length === 0) return null;
+  return bestMoves[Math.floor(Math.random() * bestMoves.length)];
 }
