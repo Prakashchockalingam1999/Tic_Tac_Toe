@@ -1,0 +1,76 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  font-family: system-ui, sans-serif;
+  background: #f4f5f7;
+  color: #1f2937;
+}
+
+.app { text-align: center; }
+
+.turns { display: flex; gap: 12px; justify-content: center; margin-bottom: 0.75rem; }
+.player {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  min-width: 120px; padding: 10px 14px;
+  border: 2px solid #d1d5db; border-radius: 8px;
+  background: #fff; opacity: 0.55; font-weight: 600;
+}
+.player--active { opacity: 1; }
+.player--X.player--active { border-color: #2563eb; color: #2563eb; }
+.player--O.player--active { border-color: #dc2626; color: #dc2626; }
+.player__tag { font-size: 0.75rem; font-weight: 500; }
+
+.message { min-height: 1.4em; margin: 0 0 0.75rem; color: #b45309; font-size: 0.95rem; }
+
+.result { font-size: 1.4rem; font-weight: 700; margin: 0 0 0.75rem; }
+.result--X { color: #2563eb; }
+.result--O { color: #dc2626; }
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  grid-template-rows: repeat(3, 100px);
+  gap: 8px;
+}
+
+.square {
+  font-size: 2.8rem;
+  font-weight: 700;
+  background: #fff;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.square:hover:not([aria-disabled='true']) { background: #eef2ff; }
+.square[aria-disabled='true'] { cursor: not-allowed; }
+.square--X { color: #2563eb; }
+.square--O { color: #dc2626; }
+
+.square--winning { background: #dcfce7; border-color: #16a34a; }
+
+.scoreboard { display: flex; gap: 12px; justify-content: center; margin-bottom: 1rem; }
+.score {
+  display: flex; flex-direction: column; min-width: 90px; padding: 8px 12px;
+  background: #fff; border: 2px solid #d1d5db; border-radius: 8px; font-size: 0.85rem;
+}
+.score strong { font-size: 1.5rem; }
+.score--X { color: #2563eb; }
+.score--O { color: #dc2626; }
+
+.reset {
+  margin-top: 1.25rem; padding: 10px 20px; font-size: 1rem; font-weight: 600;
+  background: #1f2937; color: #fff; border: 0; border-radius: 8px; cursor: pointer;
+}
+.reset:hover { background: #374151; }
+
+.history { margin-top: 1.5rem; text-align: left; max-width: 320px; margin-inline: auto; }
+.history h2 { font-size: 1rem; margin: 0 0 0.5rem; }
+.history ol { margin: 0; padding-left: 1.5rem; font-size: 0.9rem; }
+.history__empty { margin: 0; font-size: 0.9rem; color: #6b7280; }
+.history__item--X { color: #2563eb; }
+.history__item--O { color: #dc2626; }
