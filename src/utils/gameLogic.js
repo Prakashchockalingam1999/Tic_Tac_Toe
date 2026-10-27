@@ -17,3 +17,30 @@ export function calculateWinner(squares) {
 export function isDraw(squares) {
   return squares.every(Boolean) && !calculateWinner(squares);
 }
+
+// Cell where `player` would complete a line, or null.
+function findCompletingCell(squares, player) {
+  for (const line of WIN_LINES) {
+    const marks = line.map((i) => squares[i]);
+    if (marks.filter((m) => m === player).length === 2 && marks.includes(null)) {
+      return line[marks.indexOf(null)];
+    }
+  }
+  return null;
+}
+
+// Simple computer opponent: win if possible, else block, else centre, corner, any.
+export function getComputerMove(squares, player) {
+  const opponent = player === 'X' ? 'O' : 'X';
+  const win = findCompletingCell(squares, player);
+  if (win !== null) return win;
+  const block = findCompletingCell(squares, opponent);
+  if (block !== null) return block;
+
+  const empty = (i) => squares[i] === null;
+  if (empty(4)) return 4;
+  const corners = [0, 2, 6, 8].filter(empty);
+  if (corners.length) return corners[Math.floor(Math.random() * corners.length)];
+  const rest = squares.map((_, i) => i).filter(empty);
+  return rest[Math.floor(Math.random() * rest.length)];
+}

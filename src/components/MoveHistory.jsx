@@ -1,5 +1,5 @@
 // Lists every valid move of the current game, in order.
-function MoveHistory({ history }) {
+function MoveHistory({ history, names }) {
   return (
     <section className="history">
       <h2>Move history</h2>
@@ -9,7 +9,7 @@ function MoveHistory({ history }) {
         <ol>
           {history.map(({ player, cell }, i) => (
             <li key={i} className={`history__item history__item--${player}`}>
-              Player {player} → row {Math.floor(cell / 3) + 1}, col {(cell % 3) + 1}
+              {names[player]} → row {Math.floor(cell / 3) + 1}, col {(cell % 3) + 1}
             </li>
           ))}
         </ol>

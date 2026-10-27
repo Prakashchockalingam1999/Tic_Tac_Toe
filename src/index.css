@@ -62,11 +62,13 @@ body {
 .score--X { color: #2563eb; }
 .score--O { color: #dc2626; }
 
-.reset {
-  margin-top: 1.25rem; padding: 10px 20px; font-size: 1rem; font-weight: 600;
+.reset, .undo {
+  padding: 10px 20px; font-size: 1rem; font-weight: 600;
   background: #1f2937; color: #fff; border: 0; border-radius: 8px; cursor: pointer;
 }
-.reset:hover { background: #374151; }
+.reset:hover, .undo:hover:not(:disabled) { background: #374151; }
+.undo:disabled { opacity: 0.4; cursor: not-allowed; }
+.actions { display: flex; gap: 10px; justify-content: center; margin-top: 1.25rem; }
 
 .history { margin-top: 1.5rem; text-align: left; max-width: 320px; margin-inline: auto; }
 .history h2 { font-size: 1rem; margin: 0 0 0.5rem; }
@@ -74,3 +76,10 @@ body {
 .history__empty { margin: 0; font-size: 0.9rem; color: #6b7280; }
 .history__item--X { color: #2563eb; }
 .history__item--O { color: #dc2626; }
+
+.modes { display: flex; gap: 8px; justify-content: center; margin-bottom: 1rem; }
+.mode {
+  padding: 6px 14px; font-size: 0.9rem; font-weight: 600; cursor: pointer;
+  background: #fff; color: #1f2937; border: 2px solid #d1d5db; border-radius: 999px;
+}
+.mode--active { background: #1f2937; color: #fff; border-color: #1f2937; }

@@ -1,5 +1,5 @@
 // Shows both players and highlights whose turn it is.
-function TurnIndicator({ currentPlayer }) {
+function TurnIndicator({ currentPlayer, names }) {
   return (
     <div className="turns" aria-live="polite">
       {['X', 'O'].map((player) => (
@@ -7,8 +7,8 @@ function TurnIndicator({ currentPlayer }) {
           key={player}
           className={`player player--${player} ${currentPlayer === player ? 'player--active' : ''}`}
         >
-          Player {player}
-          {currentPlayer === player && <span className="player__tag">Your turn</span>}
+          {names[player]}
+          {currentPlayer === player && <span className="player__tag">Turn</span>}
         </div>
       ))}
     </div>
