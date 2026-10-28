@@ -11,6 +11,7 @@ function App() {
   // Each entry: { player: 'X' | 'O', cell: 0-8 }
   const [history, setHistory] = useState([]);
   const [message, setMessage] = useState('');
+  const [undoUsed, setUndoUsed] = useState(false); // one undo per game
   const [mode, setMode] = useState('two-player'); // 'two-player' | 'computer'
   const [scores, setScores] = useState({ X: 0, O: 0, draws: 0 });
 
@@ -64,7 +65,8 @@ function App() {
   // Undo the latest move. Board, turn, win/draw status and the move list all
   // follow automatically because they are derived from history.
   function handleUndo() {
-    if (history.length === 0) return;
+    if (history.length === 0 || undoUsed) return;
+    setUndoUsed(true);
 
     // If that move ended the game, take back the point it earned,
     // otherwise replaying the move would count it twice.
@@ -88,13 +90,15 @@ function App() {
   function handleModeChange(newMode) {
     if (newMode === mode) return;
     setMode(newMode);
-    setHistory([]); // a different opponent means a fresh game
+    setHistory([]);
+    setUndoUsed(false); // a different opponent means a fresh game
     setMessage('');
   }
 
   // Fresh game: board, history, result and turn all reset. Scores are untouched.
   function handleReset() {
     setHistory([]);
+    setUndoUsed(false);
     setMessage('');
   }
 
@@ -118,7 +122,7 @@ function App() {
         disabled={gameOver}
       />
       <div className="actions">
-        <button className="undo" onClick={handleUndo} disabled={history.length === 0}>
+        <button className="undo" onClick={handleUndo} disabled={history.length === 0 || undoUsed}>
           Undo Last Move
         </button>
         <button className="reset" onClick={handleReset}>Reset Game</button>

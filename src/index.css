@@ -70,7 +70,17 @@ body {
 .undo:disabled { opacity: 0.4; cursor: not-allowed; }
 .actions { display: flex; gap: 10px; justify-content: center; margin-top: 1.25rem; }
 
-.history { margin-top: 1.5rem; text-align: left; max-width: 320px; margin-inline: auto; }
+.history {
+  position: fixed; top: 0; right: 0; bottom: 0; width: 280px;
+  padding: 1.5rem 1rem; overflow-y: auto; text-align: left;
+  background: #fff; border-left: 2px solid #d1d5db;
+}
+@media (max-width: 900px) {
+  .history {
+    position: static; width: auto; max-width: 320px; margin: 1.5rem auto 0;
+    padding: 0; background: none; border: 0; overflow: visible;
+  }
+}
 .history h2 { font-size: 1rem; margin: 0 0 0.5rem; }
 .history ol { margin: 0; padding-left: 1.5rem; font-size: 0.9rem; }
 .history__empty { margin: 0; font-size: 0.9rem; color: #6b7280; }
